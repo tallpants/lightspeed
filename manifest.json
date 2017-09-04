@@ -1,0 +1,10 @@
+{
+  "manifest_version": 2,
+  "name": "Lightspeed",
+  "version": "0.1",
+  "description": "lightspeed v.0.1",
+  "permissions": ["tabs"],
+  "chrome_url_overrides": {
+    "newtab": "index.html"
+  }
+}
