@@ -1,5 +1,5 @@
 <template>
-  <v-card class="list-item" @click="focus(tab)">
+  <v-card class="list-item" hover @click="focus(tab)">
     <v-list-tile>
       <v-list-tile-content>
         <v-list-tile-title>{{ tab.title }}</v-list-tile-title>
@@ -23,7 +23,9 @@ export default {
 </script>
 
 <style lang="stylus">
-.list-item {
-  margin-top: 15px;
-}
+.list-item
+  margin-top 15px
+  background-color #E3FFFF
+  &:hover
+    background-color #B3E5FC
 </style>

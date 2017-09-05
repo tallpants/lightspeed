@@ -19,7 +19,6 @@ export default {
 </script>
 
 <style lang="stylus">
-.list-item {
-  margin-top: 15px;
-}
+.list-item
+  margin-top 15px
 </style>

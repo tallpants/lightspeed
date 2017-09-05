@@ -39,15 +39,12 @@ export default {
 <style lang="stylus">
 @import './stylus/main'
 
-#app {
-  margin-top: 20px;
-}
+#app
+  margin-top 20px
 
-.search-toolbar {
-  width: 50% !important;
+.search-toolbar
+  width 50% !important
 
-  .toolbar__content {
+  .toolbar__content
     width: 100%;
-  }
-}
 </style>
