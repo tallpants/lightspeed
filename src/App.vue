@@ -9,7 +9,7 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs8 offset-xs2>
-        <List :tabs="tabs" :searchString="searchString"></List>
+        <List :tabs="tabs"></List>
       </v-flex>
     </v-layout>
   </v-container>
@@ -22,10 +22,26 @@ export default {
   data() {
     return {
       searchString: '',
-      tabs: []
+      tabs: [],
+      bookmarks: []
     };
   },
 
+  watch: {
+    searchString(newSearchString) {
+      // Load all the bookmarks that match the search string into state when the user types.
+      chrome.bookmarks.search(newSearchString, bookmarks => {
+        this.bookmarks = bookmarks;
+      });
+
+      // Filter the tabs according to the search string a user types.
+      chrome.tabs.query({}, tabs => {
+        this.tabs = tabs.filter(tab => tab.title.toLowerCase().includes(newSearchString.toLowerCase()));
+      });
+    }
+  },
+
+  // Load all open tabs into state initially
   mounted() {
     chrome.tabs.query({}, tabs => {
       this.tabs = tabs;

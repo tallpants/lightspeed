@@ -1,6 +1,6 @@
 <template>
   <v-list two-line subheader>
-    <ListItem v-for="tab of tabs" v-if="tabTitleContains(tab, searchString)" :tab="tab" :key="tab.id"></ListItem>
+    <ListItem v-for="tab of tabs" :tab="tab" :key="tab.id"></ListItem>
   </v-list>
 </template>
 
@@ -8,12 +8,7 @@
 import ListItem from './ListItem.vue';
 
 export default {
-  props: ['tabs', 'searchString'],
-  methods: {
-    tabTitleContains(tab, searchString) {
-      return tab.title.toLowerCase().includes(searchString.toLowerCase());
-    }
-  },
+  props: ['tabs'],
   components: { ListItem }
 }
 </script>

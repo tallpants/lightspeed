@@ -3,7 +3,7 @@
   "name": "Lightspeed",
   "version": "0.1",
   "description": "lightspeed v.0.1",
-  "permissions": ["tabs"],
+  "permissions": ["tabs", "bookmarks"],
   "chrome_url_overrides": {
     "newtab": "index.html"
   }
