@@ -1,5 +1,14 @@
 {
   "presets": [
-    ["env", { "modules": false }]
+    ["es2015",  {"modules": false}],
+    ["stage-2"]
+  ],
+  "plugins": [
+    "add-filehash",
+    ["transform-imports", {
+        "vuetify": {
+            "transform": "vuetify/src/components/${member}"
+        }
+    }]
   ]
 }
