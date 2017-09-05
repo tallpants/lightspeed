@@ -9,14 +9,14 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs8 offset-xs2>
-        <List :tabs="tabs"></List>
+        <TabsList :tabs="tabs"></TabsList>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import List from './components/List.vue';
+import TabsList from './components/TabsList.vue';
 
 export default {
   data() {
@@ -36,7 +36,12 @@ export default {
 
       // Filter the tabs according to the search string a user types.
       chrome.tabs.query({}, tabs => {
-        this.tabs = tabs.filter(tab => tab.title.toLowerCase().includes(newSearchString.toLowerCase()));
+        this.tabs = tabs.filter(tab => {
+          return (
+            tab.title.toLowerCase().includes(newSearchString.toLowerCase()) ||
+            tab.url.toLowerCase().includes(newSearchString.toLowerCase())
+          );
+        });
       });
     }
   },
@@ -48,7 +53,7 @@ export default {
     });
   },
 
-  components: { List }
+  components: { TabsList }
 };
 </script>
 
