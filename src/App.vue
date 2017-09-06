@@ -34,7 +34,8 @@ export default {
 
   watch: {
     searchString(newSearchString) {
-      // Load all the bookmarks that match the search string into state when the user types.
+      // Load all the bookmarks and history items that match the
+      // search string into state when the user types.
       if (newSearchString === '') {
         this.bookmarks = [];
         this.history = [];
