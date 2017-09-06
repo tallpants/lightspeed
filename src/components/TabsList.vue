@@ -3,7 +3,7 @@
     <v-subheader>
       <v-icon>tab</v-icon> &nbsp; &nbsp; Tabs
     </v-subheader>
-    <v-list-tile avatar v-for="tab of tabs" :key="tab.id" @click="focus(tab)">
+    <v-list-tile class="list-item" avatar v-for="tab of tabs" :key="tab.id" @click="focus(tab)">
       <v-list-tile-avatar>
         <img :src="`chrome://favicon/${tab.url}`">
       </v-list-tile-avatar>

@@ -3,7 +3,7 @@
     <v-subheader>
       <v-icon>bookmark</v-icon> &nbsp; &nbsp; Bookmarks
     </v-subheader>
-    <v-list-tile avatar v-for="bookmark of bookmarks" v-if="bookmark.url" :key="bookmark.id" @click="open(bookmark)">
+    <v-list-tile class="list-item" avatar v-for="bookmark of bookmarks" v-if="bookmark.url" :key="bookmark.id" @click="open(bookmark)">
       <v-list-tile-avatar>
         <img :src="`chrome://favicon/${bookmark.url}`">
       </v-list-tile-avatar>

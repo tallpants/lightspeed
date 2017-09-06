@@ -83,6 +83,9 @@ export default {
   .toolbar__content
     width 100%
 
+.list-item
+  margin-left 30px
+
 .list__tile
   height 48px
   font-size 14px
