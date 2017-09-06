@@ -5,3 +5,7 @@ mounted() {
     });
 },
 ```
+
+Run on mount to get history
+Slice to 100 entries to help perf
+Gets only current machine's history
