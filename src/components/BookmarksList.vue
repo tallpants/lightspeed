@@ -1,16 +1,18 @@
 <template>
-  <v-list two line subheader>
-    <v-card v-for="bookmark of bookmarks" v-if="bookmark.url" :key="bookmark.id" class="bookmark-list-item" hover @click="open(bookmark)">
-      <v-list-tile>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ bookmark.title }}</v-list-tile-title>
-          <v-list-tile-sub-title>
-            <a :href="bookmark.url">{{ bookmark.url }}</a>
-          </v-list-tile-sub-title>
-        </v-list-tile-content>
-      </v-list-tile>
-    </v-card>
-  </v-list>
+  <v-list subheader>
+    <v-subheader>
+      <v-icon>bookmark</v-icon> &nbsp; &nbsp; Bookmarks
+    </v-subheader>
+    <v-list-tile avatar v-for="bookmark of bookmarks" v-if="bookmark.url" :key="bookmark.id" @click="open(bookmark)">
+      <v-list-tile-avatar>
+        <img :src="`chrome://favicon/${bookmark.url}`">
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>{{ bookmark.title }} -
+          <span class="url">{{ bookmark.url }}</span>
+        </v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
 </template>
 
 <script>
@@ -26,9 +28,6 @@ export default {
 </script>
 
 <style lang="stylus">
-.bookmark-list-item
-  margin-top 15px
-  background-color #aed581
-  &:hover
-    background-color #dcedc8
+.url
+  color #999
 </style>
