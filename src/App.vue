@@ -10,6 +10,7 @@
     <v-layout row wrap>
       <v-flex xs8 offset-xs2>
         <TabsList :tabs="tabs"></TabsList>
+        <BookmarksList :bookmarks="bookmarks"></BookmarksList>
       </v-flex>
     </v-layout>
   </v-container>
@@ -17,6 +18,7 @@
 
 <script>
 import TabsList from './components/TabsList.vue';
+import BookmarksList from './components/BookmarksList.vue';
 
 export default {
   data() {
@@ -30,9 +32,13 @@ export default {
   watch: {
     searchString(newSearchString) {
       // Load all the bookmarks that match the search string into state when the user types.
-      chrome.bookmarks.search(newSearchString, bookmarks => {
-        this.bookmarks = bookmarks;
-      });
+      if (newSearchString === '') {
+        this.bookmarks = [];
+      } else {
+        chrome.bookmarks.search(newSearchString, bookmarks => {
+          this.bookmarks = bookmarks;
+        });
+      }
 
       // Filter the tabs according to the search string a user types.
       chrome.tabs.query({}, tabs => {
@@ -53,7 +59,7 @@ export default {
     });
   },
 
-  components: { TabsList }
+  components: { TabsList, BookmarksList }
 };
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <v-list two-line subheader>
-    <v-card v-for="tab of tabs" :key="tab.id" class="list-item" hover @click="focus(tab)">
+    <v-card v-for="tab of tabs" :key="tab.id" class="tab-list-item" hover @click="focus(tab)">
       <v-list-tile>
         <v-list-tile-content>
           <v-list-tile-title>{{ tab.title }}</v-list-tile-title>
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.list-item
+.tab-list-item
   margin-top 15px
   background-color #e3ffff
   &:hover
