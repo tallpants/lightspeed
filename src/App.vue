@@ -73,5 +73,8 @@ export default {
   width 50% !important
 
   .toolbar__content
-    width: 100%;
+    width: 100%
+
+.list__tile
+  height 72px
 </style>

@@ -19,7 +19,7 @@ export default {
 
   methods: {
     open(bookmark) {
-      window.URL = bookmark.url;
+      window.location = bookmark.url;
     }
   }
 }
@@ -28,7 +28,7 @@ export default {
 <style lang="stylus">
 .bookmark-list-item
   margin-top 15px
-  background #aed581
+  background-color #aed581
   &:hover
     background-color #dcedc8
 </style>
