@@ -11,6 +11,7 @@
       <v-flex xs8 offset-xs2>
         <TabsList :tabs="tabs"></TabsList>
         <BookmarksList :bookmarks="bookmarks"></BookmarksList>
+        <HistoryList :history="history"></HistoryList>
       </v-flex>
     </v-layout>
   </v-container>
@@ -19,13 +20,15 @@
 <script>
 import TabsList from './components/TabsList.vue';
 import BookmarksList from './components/BookmarksList.vue';
+import HistoryList from './components/HistoryList.vue';
 
 export default {
   data() {
     return {
       searchString: '',
       tabs: [],
-      bookmarks: []
+      bookmarks: [],
+      history: []
     };
   },
 
@@ -34,9 +37,14 @@ export default {
       // Load all the bookmarks that match the search string into state when the user types.
       if (newSearchString === '') {
         this.bookmarks = [];
+        this.history = [];
       } else {
         chrome.bookmarks.search(newSearchString, bookmarks => {
           this.bookmarks = bookmarks;
+        });
+        chrome.history.search({ text: newSearchString }, history => {
+          this.history = history;
+          console.log(history);
         });
       }
 
@@ -59,7 +67,7 @@ export default {
     });
   },
 
-  components: { TabsList, BookmarksList }
+  components: { TabsList, BookmarksList, HistoryList }
 };
 </script>
 
