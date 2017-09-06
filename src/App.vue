@@ -85,7 +85,7 @@ export default {
 
 .list__tile
   height 48px
-  font-size 16px
+  font-size 14px
 
   .avatar
     min-width 0px
@@ -93,4 +93,5 @@ export default {
     img
       height 16px
       width 16px
+      border-radius 0
 </style>
