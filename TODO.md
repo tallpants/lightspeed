@@ -5,3 +5,5 @@
 * History search is still messed up.
 
 * Hitting enter should open the topmost item, whether it's a tab, bookmark, or history item.
+
+* Separate the styles into their own stylus file and import them into the list components instead of dumping everything in the app component.
