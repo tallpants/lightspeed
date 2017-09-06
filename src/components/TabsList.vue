@@ -1,16 +1,16 @@
 <template>
-  <v-list two-line subheader>
-    <v-card v-for="tab of tabs" :key="tab.id" class="tab-list-item" hover @click="focus(tab)">
-      <v-list-tile>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ tab.title }}</v-list-tile-title>
-          <v-list-tile-sub-title>
-            <a :href="tab.url">{{ tab.url }}</a>
-          </v-list-tile-sub-title>
-        </v-list-tile-content>
-      </v-list-tile>
-    </v-card>
-  </v-list>
+  <v-list subheader>
+    <v-subheader>
+      <v-icon>tab</v-icon> &nbsp; &nbsp; Tabs
+    </v-subheader>
+    <v-list-tile avatar v-for="tab of tabs" :key="tab.id" @click="focus(tab)">
+      <v-list-tile-avatar>
+        <img :src="`chrome://favicon/${tab.url}`">
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title>{{ tab.title }}</v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
 </template>
 
 <script>
@@ -26,9 +26,6 @@ export default {
 </script>
 
 <style lang="stylus">
-.tab-list-item
-  margin-top 15px
-  background-color #e3ffff
-  &:hover
-    background-color #B3E5FC
+.url
+  color #999
 </style>

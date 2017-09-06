@@ -1,15 +1,19 @@
 <template>
-  <v-list two-line subheader>
-    <v-card v-for="historyItem of history" :key="historyItem.id" class="history-list-item" hover @click="open(historyItem)">
-      <v-list-tile>
-        <v-list-tile-content>
-          <v-list-tile-title>{{ historyItem.title }}</v-list-tile-title>
-          <v-list-tile-sub-title>
-            <a :href="historyItem.url">{{ historyItem.url }}</a>
-          </v-list-tile-sub-title>
-        </v-list-tile-content>
-      </v-list-tile>
-    </v-card>
+  <v-list subheader>
+    <v-list-tile avatar v-for="item of history" :key="item.id" @click="open(item)">
+      <v-list-tile-avatar>
+        <v-icon>history</v-icon>
+      </v-list-tile-avatar>
+      <v-list-tile-content>
+        <v-list-tile-title v-if="item.title">
+          {{ item.title }} -
+          <span class="url">{{ item.url }}</span>
+        </v-list-tile-title>
+        <v-list-tile-title v-else>
+          <span class="url">{{ item.url }}</span>
+        </v-list-tile-title>
+      </v-list-tile-content>
+    </v-list-tile>
   </v-list>
 </template>
 
@@ -26,9 +30,6 @@ export default {
 </script>
 
 <style lang="stylus">
-.history-list-item
-  margin-top 15px
-  background-color #f48fb1
-  &:hover
-    background-color #f8bbd0
+.url
+  color #999
 </style>

@@ -45,7 +45,6 @@ export default {
         });
         chrome.history.search({ text: newSearchString }, history => {
           this.history = history;
-          console.log(history);
         });
       }
 
@@ -82,8 +81,16 @@ export default {
   width 50% !important
 
   .toolbar__content
-    width: 100%
+    width 100%
 
 .list__tile
-  height 72px
+  height 48px
+  font-size 16px
+
+  .avatar
+    min-width 0px
+    max-width 32px
+    img
+      height 16px
+      width 16px
 </style>
