@@ -1,18 +1,7 @@
-# lightspeed
-
-> A Vue.js project
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
+```js
+mounted() {
+    chrome.history.search({ text: '', maxResults: 0, startTime: 0 }, history => {
+        console.log(history);
+    });
+},
 ```
-
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
