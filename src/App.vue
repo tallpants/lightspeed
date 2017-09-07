@@ -35,6 +35,17 @@ export default {
 
   watch: {
     searchString(newSearchString) {
+
+      // Filter the tabs according to the search string a user types.
+      chrome.tabs.query({}, tabs => {
+        this.tabs = tabs.filter(tab => {
+          return (
+            tab.title.toLowerCase().includes(newSearchString.toLowerCase()) ||
+            tab.url.toLowerCase().includes(newSearchString.toLowerCase())
+          );
+        });
+      });
+
       if (newSearchString === '') {
         this.bookmarks = [];
         this.filteredHistory = [];
@@ -42,16 +53,6 @@ export default {
         // Load all the bookmarks that match the search string when the user types
         chrome.bookmarks.search(newSearchString, bookmarks => {
           this.bookmarks = bookmarks;
-        });
-
-        // Filter the tabs according to the search string a user types.
-        chrome.tabs.query({}, tabs => {
-          this.tabs = tabs.filter(tab => {
-            return (
-              tab.title.toLowerCase().includes(newSearchString.toLowerCase()) ||
-              tab.url.toLowerCase().includes(newSearchString.toLowerCase())
-            );
-          });
         });
 
         // Filter history according to the search string the user types
@@ -85,29 +86,7 @@ export default {
 </script>
 
 <style lang="stylus">
-@import './stylus/main'
-
-#app
-  margin-top 20px
-
-.search-toolbar
-  width 50% !important
-
-  .toolbar__content
-    width 100%
-
-.list-item
-  margin-left 30px
-
-.list__tile
-  height 48px
-  font-size 14px
-
-  .avatar
-    min-width 0px
-    max-width 32px
-    img
-      height 16px
-      width 16px
-      border-radius 0
+@import './styles/main'
+@import './styles/app'
+@import './styles/list'
 </style>

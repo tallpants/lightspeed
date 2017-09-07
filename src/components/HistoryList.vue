@@ -29,8 +29,3 @@ export default {
   }
 }
 </script>
-
-<style lang="stylus">
-.url
-  color #999
-</style>
