@@ -3,16 +3,16 @@
     <v-layout row wrap>
       <v-flex xs10 offset-xs1>
         <v-toolbar class="white search-toolbar" floating dense>
-          <v-text-field v-model="searchString" prepend-icon="search" full-width hide-details single-line autofocus></v-text-field>
+          <v-text-field v-model="searchString" @keypress.enter="openFirstItem" prepend-icon="search" full-width hide-details single-line autofocus></v-text-field>
           <jumper v-if="debounceIndicator"></jumper>
         </v-toolbar>
       </v-flex>
     </v-layout>
     <v-layout row wrap>
       <v-flex xs8 offset-xs2>
-        <TabsList :tabs="tabs"></TabsList>
-        <BookmarksList :bookmarks="bookmarks"></BookmarksList>
-        <HistoryList :history="filteredHistory"></HistoryList>
+        <TabsList :tabs="tabs" ref="TabsListRef"></TabsList>
+        <BookmarksList :bookmarks="bookmarks" ref="BookmarksListRef"></BookmarksList>
+        <HistoryList :history="filteredHistory" ref="HistoryListRef"></HistoryList>
       </v-flex>
     </v-layout>
   </v-container>
@@ -35,6 +35,18 @@ export default {
       debounceTimer: null,
       debounceIndicator: false
     };
+  },
+
+  methods: {
+    openFirstItem() {
+      if (this.tabs.length !== 0) {
+        this.$refs.TabsListRef.focus(this.tabs[0]);
+      } else if (this.bookmarks.length !== 0) {
+        this.$refs.BookmarksListRef.open(this.bookmarks[0]);
+      } else if (this.filteredHistory.length !== 0) {
+        this.$refs.HistoryListRef.open(this.filteredHistory[0]);
+      }
+    }
   },
 
   watch: {
