@@ -6,6 +6,10 @@
 
 * ~~Separate the styles into their own stylus file and import them into the list components instead of dumping everything in the app component.~~
 
+* ~~Debounce indicator and timings.~~
+
 * Hitting enter should open the topmost item, whether it's a tab, bookmark, or history item.
 
 * Keyboard navigation maybe?
+
+* LOTS of refactoring.
