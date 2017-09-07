@@ -22,6 +22,11 @@ export default {
   methods: {
     focus(tab) {
       chrome.tabs.update(tab.id, { active: true });
+      chrome.windows.getCurrent({}, currentWindow => {
+        if (currentWindow.id !== tab.windowId) {
+          chrome.windows.update(tab.windowId, { focused: true });
+        }
+      });
     }
   }
 }
