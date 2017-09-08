@@ -1,28 +1,28 @@
 <template>
-  <v-container grid-list-md text-xs-center id="app">
+  <v-container grid list-md text-xs-center id="app">
     <v-layout row wrap>
       <v-flex xs10 offset-xs1>
         <v-toolbar class="white search-toolbar" floating dense>
-          <v-text-field v-model="searchString" @keypress.enter="openFirstItem" prepend-icon="search" full-width hide-details single-line autofocus></v-text-field>
-          <jumper v-if="debounceIndicator"></jumper>
+          <v-text-field v-model="searchString" prepend-icon="search" full-width hide-details single-line autofocus></v-text-field>
+          <Jumper v-if="debounceIndicator"></Jumper>
         </v-toolbar>
       </v-flex>
     </v-layout>
     <v-layout row wrap>
       <v-flex xs8 offset-xs2>
-        <TabsList :tabs="tabs" ref="TabsListRef"></TabsList>
-        <BookmarksList :bookmarks="bookmarks" ref="BookmarksListRef"></BookmarksList>
-        <HistoryList :history="filteredHistory" ref="HistoryListRef"></HistoryList>
+        <List icon="tab" title="Tabs" :items="tabs" :open="focusTab"></List>
+        <List icon="bookmark" title="Bookmarks" :items="bookmarks" :open="openItem"></List>
+        <List icon="history" title="History" :items="filteredHistory" :open="openItem"></List>
       </v-flex>
     </v-layout>
   </v-container>
 </template>
 
 <script>
-import TabsList from './components/TabsList.vue';
-import BookmarksList from './components/BookmarksList.vue';
-import HistoryList from './components/HistoryList.vue';
+import List from './components/List.vue';
 import Jumper from './components/Jumper.vue';
+
+import contains from './util/contains';
 
 export default {
   data() {
@@ -30,7 +30,7 @@ export default {
       searchString: '',
       tabs: [],
       bookmarks: [],
-      rawHistory: [],
+      fullHistory: [],
       filteredHistory: [],
       debounceTimer: null,
       debounceIndicator: false
@@ -38,15 +38,23 @@ export default {
   },
 
   methods: {
-    openFirstItem() {
-      if (this.tabs.length !== 0) {
-        this.$refs.TabsListRef.focus(this.tabs[0]);
-      } else if (this.bookmarks.length !== 0) {
-        this.$refs.BookmarksListRef.open(this.bookmarks[0]);
-      } else if (this.filteredHistory.length !== 0) {
-        this.$refs.HistoryListRef.open(this.filteredHistory[0]);
-      }
+    focusTab(tab) {
+      chrome.tabs.update(tab.id, { active: true });
+      chrome.windows.getCurrent({}, currentWindow => {
+        if (currentWindow.id !== tab.windowId) {
+          chrome.windows.update(tab.windowId, { focused: true });
+        }
+      });
+    },
+
+    openItem(item) {
+      window.location = item.url;
     }
+  },
+
+  mounted() {
+    chrome.tabs.query({}, tabs => this.tabs = tabs);
+    chrome.history.search({ text: '', maxResults: 0, startTime: 0 }, history => this.fullHistory = history);
   },
 
   watch: {
@@ -54,18 +62,10 @@ export default {
       clearTimeout(this.debounceTimer);
 
       if (newSearchString === '') {
+        this.debounceIndicator = false;
         this.bookmarks = [];
         this.filteredHistory = [];
-
-        chrome.tabs.query({}, tabs => {
-          this.tabs = tabs.filter(tab => {
-            return (
-              tab.title.toLowerCase().includes(newSearchString.toLowerCase()) ||
-              tab.url.toLowerCase().includes(newSearchString.toLowerCase())
-            );
-          });
-        });
-
+        chrome.tabs.query({}, tabs => this.tabs = tabs);
         return;
       }
 
@@ -74,53 +74,33 @@ export default {
       this.debounceTimer = setTimeout(() => {
         this.debounceIndicator = false;
 
-        // Filter the tabs according to the search string a user types.
         chrome.tabs.query({}, tabs => {
-          this.tabs = tabs.filter(tab => {
-            return (
-              tab.title.toLowerCase().includes(newSearchString.toLowerCase()) ||
-              tab.url.toLowerCase().includes(newSearchString.toLowerCase())
-            );
-          });
+          this.tabs = tabs.filter(tab => contains(tab, newSearchString));
         });
 
-        // Load all the bookmarks that match the search string when the user types
-        chrome.bookmarks.search(newSearchString, bookmarks => {
-          this.bookmarks = bookmarks;
-        });
+        chrome.bookmarks.search(newSearchString, bookmarks => this.bookmarks = bookmarks);
 
-        // Filter history according to the search string the user types
-        this.filteredHistory = this.rawHistory.filter(historyItem => {
-          if (historyItem.title) {
-            return (
-              historyItem.title.toLowerCase().includes(newSearchString.toLowerCase()) ||
-              historyItem.url.toLowerCase().includes(newSearchString.toLowerCase())
-            );
-          } else {
-            return historyItem.url.toLowerCase().includes(newSearchString.toLowerCase());
-          }
+        this.filteredHistory = this.fullHistory.filter(historyItem => {
+          return contains(historyItem, newSearchString);
         }).slice(0, 20);
+
       }, 250);
-    },
+    }
   },
 
-  // Load all open tabs and history into state initially
-  mounted() {
-    chrome.tabs.query({}, tabs => {
-      this.tabs = tabs;
-    });
-
-    chrome.history.search({ text: '', maxResults: 0, startTime: 0 }, history => {
-      this.rawHistory = history;
-    })
-  },
-
-  components: { TabsList, BookmarksList, HistoryList, Jumper }
-};
+  components: { List, Jumper }
+}
 </script>
 
 <style lang="stylus">
-@import './styles/main'
-@import './styles/app'
-@import './styles/list'
+@import '../node_modules/vuetify/src/stylus/main'
+
+#app
+  margin-top 20px
+
+.search-toolbar
+  width 50% !important
+
+  .toolbar__content
+    width 100%
 </style>

@@ -1,9 +1,9 @@
 <template>
   <v-list subheader>
     <v-subheader>
-      <v-icon>history</v-icon> &nbsp; &nbsp; History
+      <v-icon>{{ icon }}</v-icon> &nbsp; &nbsp; {{ title }}
     </v-subheader>
-    <v-list-tile class="list-item" avatar v-for="item of history" :key="item.id" @click="open(item)">
+    <v-list-tile class="list-item" avatar v-for="item of items" :key="item.id" @click="open(item)">
       <v-list-tile-avatar>
         <img :src="`chrome://favicon/${item.url}`">
       </v-list-tile-avatar>
@@ -16,16 +16,32 @@
         </v-list-tile-title>
       </v-list-tile-content>
     </v-list-tile>
+  </v-list>
 </template>
 
 <script>
 export default {
-  props: ['history'],
-
-  methods: {
-    open(historyItem) {
-      window.location = historyItem.url;
-    }
-  }
+  props: ['icon', 'title', 'items', 'open']
 }
 </script>
+
+<style lang="stylus">
+.list-item
+  margin-left 30px
+
+.list__tile
+  height 48px
+  font-size 14px
+
+  .avatar
+    min-width 0px
+    max-width 32px
+
+    img
+      height 16px
+      width 16px
+      border-radius 0
+
+.url
+  color #999
+</style>
