@@ -3,7 +3,7 @@
     <v-layout row wrap>
       <v-flex xs10 offset-xs1>
         <v-toolbar class="white search-toolbar" floating dense>
-          <v-text-field v-model="searchString" prepend-icon="search" full-width hide-details single-line autofocus></v-text-field>
+          <v-text-field v-model="searchString" @keyup.enter="openFirstItem" prepend-icon="search" full-width hide-details single-line autofocus></v-text-field>
           <Jumper v-if="debounceIndicator"></Jumper>
         </v-toolbar>
       </v-flex>
@@ -49,6 +49,16 @@ export default {
 
     openItem(item) {
       window.location = item.url;
+    },
+
+    openFirstItem() {
+      if (this.tabs.length !== 0) {
+        this.focusTab(this.tabs[0]);
+      } else if (this.bookmarks.length !== 0) {
+        this.openItem(this.bookmarks[0]);
+      } else if (this.filteredHistory.length !== 0) {
+        this.openItem(this.filteredHistory[0]);
+      }
     }
   },
 
