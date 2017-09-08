@@ -31,7 +31,7 @@ export default {
     box-sizing border-box
 
 .spinner>div
-  background-color #41b883
+  background-color #2196f3
   border-radius 100%
   animation-fill-mode both
   position absolute
