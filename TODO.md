@@ -11,5 +11,3 @@
 * ~~LOTS of refactoring.~~
 
 * ~~Hitting enter should open the topmost item, whether it's a tab, bookmark, or history item.~~
-
-* Keyboard navigation (needs the refactoring).
