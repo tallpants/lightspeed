@@ -4,7 +4,7 @@
       <v-subheader>
         <v-icon>tab</v-icon> &nbsp; &nbsp; Tabs
       </v-subheader>
-      <v-list-tile class="list-item" avatar v-for="tab of tabs" :key="tab.id" @click="focusTab(tab)">
+      <v-list-tile class="list-item" avatar v-for="tab of tabs" :class="{ 'selected': selected === tab.id }" :key="tab.id" @click="focusTab(tab)">
         <v-list-tile-avatar>
           <img :src="`chrome://favicon/${tab.url}`">
         </v-list-tile-avatar>
@@ -20,7 +20,7 @@
       <v-subheader>
         <v-icon>bookmark</v-icon> &nbsp; &nbsp; Bookmarks
       </v-subheader>
-      <v-list-tile class="list-item" avatar v-for="bookmark of bookmarks" :key="bookmark.id" @click="open(bookmark)">
+      <v-list-tile class="list-item" avatar v-for="bookmark of bookmarks" :class="{ 'selected': selected === bookmark.id}" :key="bookmark.id" @click="open(bookmark)">
         <v-list-tile-avatar>
           <img :src="`chrome://favicon/${bookmark.url}`">
         </v-list-tile-avatar>
@@ -36,7 +36,7 @@
       <v-subheader>
         <v-icon>history</v-icon> &nbsp; &nbsp; History
       </v-subheader>
-      <v-list-tile class="list-item" avatar v-for="historyItem of history" :key="historyItem.id" @click="open(historyItem)">
+      <v-list-tile class="list-item" avatar v-for="historyItem of history" :class="{ 'selected': selected === historyItem.id }" :key="historyItem.id" @click="open(historyItem)">
         <v-list-tile-avatar>
           <img :src="`chrome://favicon/${historyItem.url}`">
         </v-list-tile-avatar>
@@ -69,7 +69,7 @@ export default {
       window.location = item.url;
     }
   },
-  props: ['tabs', 'bookmarks', 'history']
+  props: ['tabs', 'bookmarks', 'history', 'selected']
 }
 </script>
 
@@ -92,4 +92,7 @@ export default {
 
 .url
   color #999
+
+.selected
+  background-color #DDD
 </style>

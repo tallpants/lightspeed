@@ -2,15 +2,15 @@
   <v-container grid list-md text-xs-center id="app">
     <v-layout row wrap>
       <v-flex xs10 offset-xs1>
-        <v-toolbar class="white search-toolbar" floating dense>
-          <v-text-field v-model="searchString" @keyup.enter="openFirstItem" prepend-icon="search" full-width hide-details single-line autofocus></v-text-field>
+        <v-toolbar class="white search-toolbar" floating dense @keydown.up.prevent="scrollUp" @keydown.down.prevent="scrollDown">
+          <v-text-field v-model="searchString" prepend-icon="search" full-width hide-details single-line autofocus></v-text-field>
           <Jumper v-if="debounceIndicator"></Jumper>
         </v-toolbar>
       </v-flex>
     </v-layout>
     <v-layout row wrap>
       <v-flex xs8 offset-xs2>
-        <List :tabs="tabs" :bookmarks="bookmarks" :history="filteredHistory"></List>
+        <List :tabs="tabs" :bookmarks="bookmarks" :history="filteredHistory" :selected="selectedItemId"></List>
       </v-flex>
     </v-layout>
   </v-container>
@@ -30,9 +30,42 @@ export default {
       bookmarks: [],
       fullHistory: [],
       filteredHistory: [],
+      selectedItemId: null,
+      selectedItemIndex: -1,
       debounceTimer: null,
       debounceIndicator: false
     };
+  },
+
+  computed: {
+    consolidatedList() {
+      return [...this.tabs, ...this.bookmarks, ...this.filteredHistory];
+    }
+  },
+
+  methods: {
+    scrollDown() {
+      if (!this.selectedItemId) {
+        this.selectedItemIndex = 0;
+        this.selectedItemId = this.consolidatedList[this.selectedItemIndex].id;
+      } else {
+        if (this.consolidatedList[this.selectedItemIndex + 1]) {
+          this.selectedItemIndex++;
+          this.selectedItemId = this.consolidatedList[this.selectedItemIndex].id;
+        }
+      }
+    },
+
+    scrollUp() {
+      if (!this.selectedItemId) {
+        return;
+      } else {
+        if (this.consolidatedList[this.selectedItemIndex - 1]) {
+          this.selectedItemIndex--;
+          this.selectedItemId = this.consolidatedList[this.selectedItemIndex].id;
+        }
+      }
+    }
   },
 
   mounted() {
@@ -43,6 +76,9 @@ export default {
   watch: {
     searchString(newSearchString) {
       clearTimeout(this.debounceTimer);
+
+      this.selectedItemId = null;
+      this.selectedItemIndex = -1;
 
       if (newSearchString === '') {
         this.debounceIndicator = false;
