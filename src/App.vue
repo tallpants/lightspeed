@@ -10,9 +10,7 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs8 offset-xs2>
-        <List icon="tab" title="Tabs" :items="tabs" :open="focusTab"></List>
-        <List icon="bookmark" title="Bookmarks" :items="bookmarks" :open="openItem"></List>
-        <List icon="history" title="History" :items="filteredHistory" :open="openItem"></List>
+        <List :tabs="tabs" :bookmarks="bookmarks" :history="filteredHistory"></List>
       </v-flex>
     </v-layout>
   </v-container>
@@ -35,31 +33,6 @@ export default {
       debounceTimer: null,
       debounceIndicator: false
     };
-  },
-
-  methods: {
-    focusTab(tab) {
-      chrome.tabs.update(tab.id, { active: true });
-      chrome.windows.getCurrent({}, currentWindow => {
-        if (currentWindow.id !== tab.windowId) {
-          chrome.windows.update(tab.windowId, { focused: true });
-        }
-      });
-    },
-
-    openItem(item) {
-      window.location = item.url;
-    },
-
-    openFirstItem() {
-      if (this.tabs.length !== 0) {
-        this.focusTab(this.tabs[0]);
-      } else if (this.bookmarks.length !== 0) {
-        this.openItem(this.bookmarks[0]);
-      } else if (this.filteredHistory.length !== 0) {
-        this.openItem(this.filteredHistory[0]);
-      }
-    }
   },
 
   mounted() {
