@@ -1,8 +1,8 @@
 <template>
   <v-container grid list-md text-xs-center id="app">
     <v-layout row wrap>
-      <v-flex xs10 offset-xs1>
-        <v-toolbar class="white search-toolbar" floating dense @keyup.enter="open" @keydown.up.prevent="scrollUp" @keydown.down.prevent="scrollDown">
+      <v-flex xs10 offset-xs1 @keydown.up.prevent="scrollUp" @keydown.down.prevent="scrollDown">
+        <v-toolbar class="white search-toolbar" floating dense @keyup.enter="open">
           <v-text-field v-model="searchString" prepend-icon="search" full-width hide-details single-line autofocus></v-text-field>
           <Jumper v-if="debounceIndicator"></Jumper>
         </v-toolbar>
@@ -53,6 +53,10 @@ export default {
           this.selectedItemId = this.consolidatedList[this.selectedItemIndex].id;
         }
       }
+
+      const el = document.getElementsByClassName('selected')[0];
+      if ((el.offsetTop - el.offsetHeight) < document.body.scrollTop)
+        window.scroll(0, el.offsetTop - (el.offsetHeight));
     },
 
     scrollDown() {
@@ -65,6 +69,10 @@ export default {
           this.selectedItemId = this.consolidatedList[this.selectedItemIndex].id;
         }
       }
+
+      const el = document.getElementsByClassName('selected')[0];
+      if ((el.offsetTop + (el.offsetHeight * 3)) > (document.body.scrollTop + window.innerHeight))
+        window.scroll(0, el.offsetTop - window.innerHeight + (el.offsetHeight * 3));
     },
 
     open() {
@@ -116,7 +124,7 @@ export default {
 
         this.filteredHistory = this.fullHistory.filter(historyItem => {
           return contains(historyItem, newSearchString);
-        }).slice(0, 20);
+        }).slice(0, 30);
 
       }, 250);
     }
