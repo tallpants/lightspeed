@@ -2,7 +2,7 @@
   <v-container grid list-md text-xs-center id="app">
     <v-layout row wrap>
       <v-flex xs10 offset-xs1>
-        <v-toolbar class="white search-toolbar" floating dense @keydown.up.prevent="scrollUp" @keydown.down.prevent="scrollDown">
+        <v-toolbar class="white search-toolbar" floating dense @keyup.enter="open" @keydown.up.prevent="scrollUp" @keydown.down.prevent="scrollDown">
           <v-text-field v-model="searchString" prepend-icon="search" full-width hide-details single-line autofocus></v-text-field>
           <Jumper v-if="debounceIndicator"></Jumper>
         </v-toolbar>
@@ -10,7 +10,7 @@
     </v-layout>
     <v-layout row wrap>
       <v-flex xs8 offset-xs2>
-        <List :tabs="tabs" :bookmarks="bookmarks" :history="filteredHistory" :selected="selectedItemId"></List>
+        <List :tabs="tabs" :bookmarks="bookmarks" :history="filteredHistory" :selected="selectedItemId" ref="list"></List>
       </v-flex>
     </v-layout>
   </v-container>
@@ -44,6 +44,17 @@ export default {
   },
 
   methods: {
+    scrollUp() {
+      if (!this.selectedItemId) {
+        return;
+      } else {
+        if (this.consolidatedList[this.selectedItemIndex - 1]) {
+          this.selectedItemIndex--;
+          this.selectedItemId = this.consolidatedList[this.selectedItemIndex].id;
+        }
+      }
+    },
+
     scrollDown() {
       if (!this.selectedItemId) {
         this.selectedItemIndex = 0;
@@ -56,14 +67,18 @@ export default {
       }
     },
 
-    scrollUp() {
+    open() {
+      let selectedItem;
       if (!this.selectedItemId) {
-        return;
+        selectedItem = this.consolidatedList[0];
       } else {
-        if (this.consolidatedList[this.selectedItemIndex - 1]) {
-          this.selectedItemIndex--;
-          this.selectedItemId = this.consolidatedList[this.selectedItemIndex].id;
-        }
+        selectedItem = this.consolidatedList[this.selectedItemIndex];
+      }
+
+      if ('windowId' in selectedItem) {
+        this.$refs.list.focusTab(selectedItem);
+      } else {
+        this.$refs.list.open(selectedItem);
       }
     }
   },
