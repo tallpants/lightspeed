@@ -55,7 +55,7 @@ export default {
       }
 
       const el = document.getElementsByClassName('selected')[0];
-      if ((el.offsetTop - el.offsetHeight) < document.body.scrollTop)
+      if ((el.offsetTop - el.offsetHeight) < window.pageYOffset)
         window.scroll(0, el.offsetTop - (el.offsetHeight));
     },
 
@@ -71,7 +71,7 @@ export default {
       }
 
       const el = document.getElementsByClassName('selected')[0];
-      if ((el.offsetTop + (el.offsetHeight * 3)) > (document.body.scrollTop + window.innerHeight))
+      if ((el.offsetTop + (el.offsetHeight * 3)) > (window.pageYOffset + window.innerHeight))
         window.scroll(0, el.offsetTop - window.innerHeight + (el.offsetHeight * 3));
     },
 
