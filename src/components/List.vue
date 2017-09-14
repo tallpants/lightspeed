@@ -4,7 +4,7 @@
       <v-subheader>
         <v-icon>tab</v-icon> &nbsp; &nbsp; Tabs
       </v-subheader>
-      <v-list-tile class="list-item" avatar v-for="tab of tabs" :class="{ 'selected': selected === tab.id }" :key="tab.id" @click="focusTab(tab)">
+      <v-list-tile class="list-item" avatar v-for="tab of tabs" v-if="tab.url !== 'chrome://newtab/'" :class="{ 'selected': selected === tab.id }" :key="tab.id" @click="focusTab(tab)">
         <v-list-tile-avatar>
           <img :src="`chrome://favicon/${tab.url}`">
         </v-list-tile-avatar>
