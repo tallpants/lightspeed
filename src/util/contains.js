@@ -1,15 +1,29 @@
-export default function(object, string) {
-  const words = string.toLowerCase().split(' ');
-  let status = { title: true, url: true };
+export default function(object, words) 
+{
+  let found = true;
+  if('title' in object)
+  {
+    const sField = object['title'].toLowerCase();
+    for(let word of words) 
+    {
+      found = found && sField.indexOf(word) >= 0;
+    }
 
-  for (let field of ['title', 'url']) {
-    if (field in object) {
-      for (let word of words) {
-        status[field] =
-          status[field] && object[field].toLowerCase().includes(word);
-      }
+    if(found)
+    {
+      return true;
     }
   }
 
-  return status.title || status.url;
+  found = true;
+  if('url' in object)
+  {
+    const sField = object['url'].toLowerCase();
+    for(let word of words) 
+    {
+      found = found && sField.indexOf(word) >= 0;
+    }
+  }
+  
+  return found;
 }

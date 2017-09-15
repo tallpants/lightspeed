@@ -116,16 +116,31 @@ export default {
       this.debounceTimer = setTimeout(() => {
         this.debounceIndicator = false;
 
+        const words = newSearchString.toLowerCase().split(' ');
+
         chrome.tabs.query({}, tabs => {
-          this.tabs = tabs.filter(tab => contains(tab, newSearchString));
+          this.tabs = tabs.filter(tab => contains(tab, words));
         });
 
         chrome.bookmarks.search(newSearchString, bookmarks => this.bookmarks = bookmarks);
 
-        this.filteredHistory = this.fullHistory.filter(historyItem => {
-          return contains(historyItem, newSearchString);
-        }).slice(0, 30);
+        //console.time("Query:" + newSearchString);
 
+        this.filteredHistory = [];
+        for(let i = 0; i < this.fullHistory.length; ++i)
+        {
+          const item = this.fullHistory[i];
+          if(contains(item, words))
+          {
+            this.filteredHistory.push(item);
+            if(this.filteredHistory.length == 30)
+            {
+              break;
+            }
+          }
+        }
+       
+        //console.timeEnd("Query:" + newSearchString);
       }, 250);
     }
   },
