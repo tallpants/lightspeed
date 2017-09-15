@@ -94,6 +94,10 @@ export default {
   mounted() {
     chrome.tabs.query({}, tabs => this.tabs = tabs);
     chrome.history.search({ text: '', maxResults: 0, startTime: 0 }, history => this.fullHistory = history);
+    document.getElementsByClassName('nolink')[0].addEventListener('click', e => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
   },
 
   watch: {
