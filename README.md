@@ -1,5 +1,7 @@
 # Lightspeed
 
+[Chrome Web Store link](https://chrome.google.com/webstore/detail/lightspeed-new-tab/oejfkehmpipkcblodjhibgbiaibmaaof)
+
 A more functional new tab page for Chrome that lets you search across bookmarks, open tabs, and history.
 
 From [captn3m0](https://github.com/captn3m0)'s [ideas repo](https://github.com/captn3m0/ideas#lightspeed-for-chrome).
