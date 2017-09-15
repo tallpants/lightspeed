@@ -1,9 +1,15 @@
 {
   "manifest_version": 2,
-  "name": "Lightspeed",
-  "version": "0.1",
-  "description": "lightspeed v.0.1",
+  "name": "Lightspeed New Tab",
+  "short_name": "Lightspeed",
+  "version": "0.1.0",
+  "description": "New tab page that lets you search across bookmarks, history, and open tabs in real time",
   "permissions": ["tabs", "bookmarks", "history", "chrome://favicon/"],
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
   "chrome_url_overrides": {
     "newtab": "index.html"
   }
