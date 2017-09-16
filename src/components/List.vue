@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-list class="nolink" subheader>
+    <v-list subheader>
       <v-subheader>
         <v-icon>tab</v-icon> &nbsp; &nbsp; Tabs
       </v-subheader>
-      <v-list-tile class="list-item" avatar v-for="tab of tabs" v-if="tab.url !== 'chrome://newtab/'" :class="{ 'selected': selected === tab.id }" :key="tab.id" @click="focusTab(tab)">
+      <v-list-tile class="list-item" avatar v-for="tab of tabs" v-if="tab.url !== 'chrome://newtab/'" :class="{ 'selected': selected === tab.id }" :key="tab.id" @click.prevent="focusTab(tab)">
         <a :href="`${tab.url}`">
           <v-list-tile-avatar>
             <img :src="`chrome://favicon/${tab.url}`">
@@ -75,6 +75,7 @@ export default {
       window.location = item.url;
     }
   },
+
   props: ['tabs', 'bookmarks', 'history', 'selected']
 }
 </script>
@@ -95,6 +96,8 @@ export default {
     align-items center
     color inherit
     text-decoration none
+    width 100%
+    text-overflow ellipsis
 
   .avatar
     min-width 0px
