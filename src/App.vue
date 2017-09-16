@@ -146,7 +146,14 @@ export default {
           }
         });
 
-        chrome.bookmarks.search(newSearchString, bookmarks => this.bookmarks = bookmarks);
+        chrome.bookmarks.search(newSearchString, bookmarks => {
+          for (const bookmark of bookmarks) {
+            this.bookmarks.push(bookmark);
+            if (this.bookmarks.length === 30) {
+              break;
+            }
+          }
+        });
 
         this.filteredHistory = [];
         for (const item of this.fullHistory) {
