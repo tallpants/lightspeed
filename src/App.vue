@@ -92,7 +92,15 @@ export default {
   },
 
   mounted() {
-    chrome.tabs.query({}, tabs => this.tabs = tabs);
+    chrome.tabs.query({}, tabs => {
+      this.tabs = [];
+      for (let i = tabs.length - 1; i >= 0; i--) {
+        this.tabs.push(tabs[i]);
+        if (this.tabs.length === 30) {
+          break;
+        }
+      }
+    });
     chrome.history.search({ text: '', maxResults: 0, startTime: 0 }, history => this.fullHistory = history);
   },
 
@@ -107,7 +115,15 @@ export default {
         this.debounceIndicator = false;
         this.bookmarks = [];
         this.filteredHistory = [];
-        chrome.tabs.query({}, tabs => this.tabs = tabs);
+        chrome.tabs.query({}, tabs => {
+          this.tabs = [];
+          for (let i = tabs.length - 1; i >= 0; i--) {
+            this.tabs.push(tabs[i]);
+            if (this.tabs.length === 30) {
+              break;
+            }
+          }
+        });
         return;
       }
 
@@ -119,28 +135,28 @@ export default {
         const words = newSearchString.toLowerCase().split(' ');
 
         chrome.tabs.query({}, tabs => {
-          this.tabs = tabs.filter(tab => contains(tab, words));
+          this.tabs = [];
+          for (let i = tabs.length - 1; i >= 0; i--) {
+            if (contains(tabs[i], words)) {
+              this.tabs.push(tabs[i]);
+              if (this.tabs.length === 30) {
+                break;
+              }
+            }
+          }
         });
 
         chrome.bookmarks.search(newSearchString, bookmarks => this.bookmarks = bookmarks);
 
-        //console.time("Query:" + newSearchString);
-
         this.filteredHistory = [];
-        for(let i = 0; i < this.fullHistory.length; ++i)
-        {
-          const item = this.fullHistory[i];
-          if(contains(item, words))
-          {
+        for (const item of this.fullHistory) {
+          if (contains(item, words)) {
             this.filteredHistory.push(item);
-            if(this.filteredHistory.length == 30)
-            {
+            if (this.filteredHistory.length === 30) {
               break;
             }
           }
         }
-       
-        //console.timeEnd("Query:" + newSearchString);
       }, 250);
     }
   },
