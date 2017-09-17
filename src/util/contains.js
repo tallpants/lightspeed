@@ -1,7 +1,7 @@
 export default function(object, words) {
   let found = true;
 
-  if ('title' in object) {
+  if (object.hasOwnProperty('title')) {
     const sField = object['title'].toLowerCase();
 
     for (let word of words) {
@@ -15,7 +15,7 @@ export default function(object, words) {
 
   found = true;
 
-  if ('url' in object) {
+  if (object.hasOwnProperty('url')) {
     const sField = object['url'].toLowerCase();
 
     for (let word of words) {
